@@ -6,7 +6,8 @@ VERSION_NUMBER = "6.0.0.35-SNAPSHOT"
 repositories.remote = [ 
   "http://www.intalio.org/public/maven2", 
   "http://repo1.maven.org/maven2",
-  "http://people.apache.org/repo/m2-ibiblio-rsync-repository/"
+  "http://people.apache.org/repo/m2-ibiblio-rsync-repository/",
+  "http://developer.jasig.org/repo/content/repositories/m2"
 ]
 
 repositories.release_to[:username] ||= "release"
