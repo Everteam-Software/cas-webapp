@@ -91,7 +91,7 @@
 					class="org.jasig.cas.authentication.handler.support.SimpleTestUsernamePasswordAuthenticationHandler" />-->
 				<bean class="org.jasig.cas.adaptors.ldap.BindLdapAuthenticationHandler">
 					<property name="filter" value="cn=%u" />
-					<property name="searchBase" value="dc=example,dc=com" /> 
+					<property name="searchBase" value="dc=examples,dc=com" /> 
 					<property name="contextSource" ref="contextSource" />
 					<property name="ignorePartialResultException" value="yes" />
 				</bean>
