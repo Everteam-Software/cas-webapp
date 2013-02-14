@@ -2,6 +2,7 @@ require "buildr"
 
 # Keep this structure to allow the build system to update version numbers.
 VERSION_NUMBER = "6.0.0.38-SNAPSHOT"
+DP_VERSION_NUMBER="1.0.1"
 
 repositories.remote = [ 
   "http://www.intalio.org/public/maven2", 
@@ -14,45 +15,19 @@ repositories.release_to[:username] ||= "release"
 repositories.release_to[:url] ||= "sftp://www.intalio.org/var/www-org/public/maven2"
 repositories.release_to[:permissions] ||= 0664
 
-APACHE_COMMONS = {
-  :codec => "commons-codec:commons-codec:jar:1.3",
-  :collections => "commons-collections:commons-collections:jar:3.2", 
-  :lang => "commons-lang:commons-lang:jar:2.3",
-}
-CAS_CLIENT = "cas:casclient:jar:2.1.1"
-JDOM = "jdom:jdom:jar:1.0"
-BACKPORT = "backport-util-concurrent:backport-util-concurrent:jar:3.1"
-CAS_LIBS = [
-  group("cas-server-core",:under=>"org.jasig.cas", :version=>"3.2.1.1"),
-  group("cas-server-support-ldap",:under=>"org.jasig.cas", :version=>"3.2.1.1"),
-  "org.acegisecurity:acegi-security:jar:1.0.6",
-  "aopalliance:aopalliance:jar:1.0",
-  "aspectj:aspectjrt:jar:1.5.3",
-  "aspectj:aspectjweaver:jar:1.5.3",
-  JDOM,
-  BACKPORT,
-  CAS_CLIENT,
-  APACHE_COMMONS[:codec],
-  APACHE_COMMONS[:collections],
-  APACHE_COMMONS[:lang],
-  "net.sf.ehcache:ehcache:jar:1.4.0-beta2",
-  "quartz:quartz:jar:1.5.2",
-  "net.sf.jsr107cache:jsr107cache:jar:1.0",
-  "inspektr:core:jar:0.6.1",
-  "oro:oro:jar:2.0.8",
-  "jstl:jstl:jar:1.1.2",
-  "ognl:ognl:jar:2.6.9",
-  "opensaml:opensaml:jar:1.1b",
-  "javax.persistence:persistence-api:jar:1.0",
-  "person.directory:api:jar:1.1.1",
-  "person.directory:impl:jar:1.1.1",
-  "quartz:quartz:jar:1.5.2",
-  group("spring-aop","spring-beans","spring-context", "spring-context-support", "spring-core", "spring-jdbc","spring-orm", "spring-tx", "spring-web", "spring-webmvc",:under=>"org.springframework", :version=>"2.5.1"),
-  group("spring-ldap", "spring-ldap-tiger",:under=>"org.springframework", :version=>"1.2.1"),
-  group("spring-binding", "spring-webflow",:under=>"org.springframework", :version=>"1.0.5"), 
-  "xml-security:xmlsec:jar:1.4.0",
-  "taglibs:standard:jar:1.1.2"
-]
+if ENV['DP_VERSION_NUMBER']
+DP_VERSION_NUMBER = "#{ENV['DP_VERSION_NUMBER']}"
+end
+
+# We need to download the artifact before we load the same
+artifact("org.intalio.common:dependencies:rb:#{DP_VERSION_NUMBER}").invoke
+
+DEPENDENCIES = "#{ENV['HOME']}/.m2/repository/org/intalio/common/dependencies/#{DP_VERSION_NUMBER}/dependencies-#{DP_VERSION_NUMBER}.rb"
+if ENV["M2_REPO"]
+DEPENDENCIES ="#{ENV['M2_REPO']}/org/intalio/common/dependencies/#{DP_VERSION_NUMBER}/dependencies-#{DP_VERSION_NUMBER}.rb"
+end
+puts "Loading #{DEPENDENCIES}"
+load DEPENDENCIES
 
 desc "Embedded CAS Server"
 define "cas-webapp" do
