@@ -2,7 +2,7 @@ require "buildr"
 require "install.rb"
 
 # Keep this structure to allow the build system to update version numbers.
-VERSION_NUMBER = "6.0.0.40"
+VERSION_NUMBER = "6.0.0.41-SNAPSHOT"
 
 desc "Embedded CAS Server"
 define "cas-webapp" do
